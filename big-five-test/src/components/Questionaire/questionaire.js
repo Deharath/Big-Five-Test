@@ -122,7 +122,7 @@ export default function Questionnaire() {
 
         function Button({ value }) {
             return (
-                <button onClick={() => onOptionSelect(value)} className="bg-gray-700 text-white px-4 py-2 rounded-lg">{value}</button>
+                <button onClick={() => onOptionSelect(value)} className="bg-gray-700 text-white px-4 py-2 rounded-lg justify-center">{value}</button>
             );
         }
         function BackButton() {
@@ -132,8 +132,8 @@ export default function Questionnaire() {
         }
 
         return (
-            <div className="bg-gray-900 text-white py-16">
-                <div className="mx-auto max-w-screen-xl px-4 flex h-screen items-center justify-center question">
+            <div className="bg-gray-900 text-white">
+                <div className="mx-auto max-w-screen-xl px-4 flex h-screen items-center question">
                     <div className="mx-auto max-w-4xl text-center w-full px-4">
                         {question.id === questions.length - 1 ? (
                             <>
@@ -146,7 +146,7 @@ export default function Questionnaire() {
                                         percentages[0].toFixed(2),
                                         percentages[1].toFixed(2),
                                         percentages[3] = 100 - percentages[3].toFixed(2),
-                                        
+
                                     ];
 
                                     return (
@@ -159,22 +159,32 @@ export default function Questionnaire() {
                             </>
                         ) : (
                             <>
-                                <h2 className="text-2xl font-bold mb-4 lg:text-5xl">
-                                    {question.text}
-                                </h2>
-                                <div className="flex justify-between items-center flex-wrap">
-                                    <span className="m-5 lg:text-2xl">Not accurate</span>
-                                    <div className="flex flex-row justify-center items-center gap-5">
-                                        <Button value={1} />
-                                        <Button value={2} />
-                                        <Button value={3} />
-                                        <Button value={4} />
-                                        <Button value={5} />
+                                <div className="relative flex flex-col justify-center items-center min-h-screen">
+                                    <div className="absolute top-44 h-20 text-3xl font-bold lg:text-5xl px-4 text-center mb-5">
+                                        {question.text}
                                     </div>
-                                    <span className="m-5 lg:text-2xl">Very accurate</span>
+                                    <div className="flex flex-col items-center mt-20">
+                                        <div className="flex flex-row justify-center items-center gap-5 mb-5">
+                                            <Button value={1} />
+                                            <Button value={2} />
+                                            <Button value={3} />
+                                            <Button value={4} />
+                                            <Button value={5} />
+                                        </div>
+                                        <div className="flex justify-between w-full md:max-w-md">
+                                            <span className="lg:text-2xl">Not accurate</span>
+                                            <span className="lg:text-2xl">Very accurate</span>
+                                        </div>
+                                    </div>
+                                    <BackButton />
                                 </div>
-                                <BackButton />
+                                
                             </>
+
+
+
+
+
                         )}
                     </div>
                 </div>

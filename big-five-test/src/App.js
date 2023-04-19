@@ -11,12 +11,11 @@ function App() {
   }
 
   return (
-    <div className="App">
+    <div className="App h-full">
       {currentPhase === 'welcome' && <Welcome onButtonClick={handlePhaseChange} />}
       {currentPhase === 'questions' && <Questionnaire />}
       
     </div>
   );
 }
-//{currentPhase === 'results' && <Results />}
 export default App;

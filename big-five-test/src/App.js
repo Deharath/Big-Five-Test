@@ -1,6 +1,6 @@
 import './App.css';
 import Welcome from './components/Welcome/welcome.jsx';
-import Questionnaire from './components/Questionaire/questionaire.jsx';
+import Questionnaire from './components/Questionaire/questionaire.js';
 import { useState } from 'react';
 
 function App() {

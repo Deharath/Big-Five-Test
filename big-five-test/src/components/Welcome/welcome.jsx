@@ -14,14 +14,14 @@ export default function Welcome({ onButtonClick }) {
           </h1>
 
           <p class="mx-auto mt-4 max-w-xl sm:text-xl/relaxed">
-          Click the button below to start the questionnaire.
+            Click the button below to start the questionnaire.
           </p>
 
           <div class="mt-8 flex flex-wrap justify-center gap-4">
             <button
               onClick={() => onButtonClick('questions')}
               class="block w-full rounded border border-blue-600 bg-blue-600 px-12 py-3 text-sm font-medium text-white hover:bg-transparent hover:text-white focus:outline-none focus:ring active:text-opacity-75 sm:w-auto"
-              
+
             >
               Get Started
             </button>

@@ -5,7 +5,7 @@ import MyBarChart from '../Results/BarChart.jsx';
 
 
 
-export default function Questionnaire() {
+export default function Questionnaire({ onPhaseChange }) {
     const questions = [
         { id: 1, text: "Am the life of the party.", aspect: 1, key: "+" },
         { id: 2, text: "Feel little concern for others.", aspect: 2, key: "-" },
@@ -58,6 +58,7 @@ export default function Questionnaire() {
         { id: 49, text: "Often feel blue.", aspect: 4, key: "-" },
         { id: 50, text: "Am full of ideas.", aspect: 5, key: "+" }
     ];
+    Questionnaire.questions = questions;
 
     //Aspect 1: Extraversion (E)
     //Aspect 2: Agreeableness (A)
@@ -79,12 +80,13 @@ export default function Questionnaire() {
 
     //Function that will increase or decrease the score of given aspect based on the key of the question and move to the next one
     function onOptionSelect(value) {
+        const newAnswers = [...answers];
         if (question.key === "+") {
-            answers[question.aspect - 1] += value;
+            newAnswers[question.aspect - 1] += value;
         } else {
-            answers[question.aspect - 1] += (6 - value);
+            newAnswers[question.aspect - 1] += (6 - value);
         }
-        setAnswers(answers);
+        setAnswers(newAnswers);
         setQuestion(questions[question.id]);
     }
 
@@ -102,19 +104,6 @@ export default function Questionnaire() {
         }
     }
 
-    //Function that calculates the percentages of each aspect
-    function calculatePercentages(answers, questions) {
-        const totalQuestionsPerAspect = []
-        for (let i = 0; i < 5; i++) {
-            totalQuestionsPerAspect.push(questions.filter(question => question.aspect === i + 1).length);
-        }
-        const minScorePerAspect = [...totalQuestionsPerAspect]
-        const maxScorePerAspect = [...totalQuestionsPerAspect].map(total => total * 5);
-        const scoreRangePerAspect = maxScorePerAspect.map((max, index) => max - minScorePerAspect[index]);
-        const percentages = answers.map((answer, index) => ((answer - minScorePerAspect[index]) / scoreRangePerAspect[index]) * 100);
-
-        return percentages;
-    }
 
     function Question({ question, onOptionSelect, onBack, questions }) {
 
@@ -122,70 +111,76 @@ export default function Questionnaire() {
 
         function Button({ value }) {
             return (
-                <button onClick={() => onOptionSelect(value)} className="bg-gray-700 text-white px-4 py-2 rounded-lg justify-center">{value}</button>
+                <button onClick={() => onOptionSelect(value)} className="bg-gray-700 text-white px-5 py-5 rounded-full justify-center w-1/5 h-1/5"></button>
             );
         }
         function BackButton() {
             return (
-                <button onClick={() => onBack()} className="bg-gray-700 text-white px-4 py-2 rounded-lg mt-3">Back</button>
+                <div class="w-3/4 flex flex-col">
+                    <button onClick={() => onBack()} class="py-3 my-8 text-lg bg-gradient-to-r from-purple-500 to-indigo-600 rounded-xl text-white">Back</button>
+                </div>
             );
         }
+        //Skip button
+        function SkipButton() {
+            const handleSkip = () => {
+              const newAnswers = [11, 25, 33, 16, 44];
+              setAnswers(newAnswers);
+              onPhaseChange('results', newAnswers);
+            };
+          
+            return (
+              <button
+                className="py-3 w-20 my-8 text-lg bg-gradient-to-r from-purple-500 to-indigo-600 rounded-xl text-white"
+                onClick={handleSkip}
+              >
+                Skip
+              </button>
+            );
+          }
+          
 
         return (
             <div className="bg-gray-900 text-white">
                 <div className="mx-auto max-w-screen-xl px-4 flex h-screen items-center question">
                     <div className="mx-auto max-w-4xl text-center w-full px-4">
-                        {question.id === questions.length - 1 ? (
-                            <>
-                                {(() => {
-                                    const percentages = calculatePercentages(answers, questions);
-                                    const labels = ['Openness', 'Conscientiousness', 'Extraversion', 'Agreeableness', 'Neuroticism'];
-                                    const data = [
-                                        percentages[4].toFixed(2),
-                                        percentages[2].toFixed(2),
-                                        percentages[0].toFixed(2),
-                                        percentages[1].toFixed(2),
-                                        percentages[3] = 100 - percentages[3].toFixed(2),
-
-                                    ];
-
-                                    return (
-                                        <>
-                                            <div className="text-2xl font-bold mb-5 lg:text-5xl">Your score:</div>
-                                            <MyBarChart data={data} labels={labels} />
-                                        </>
-                                    );
-                                })()}
-                            </>
-                        ) : (
-                            <>
-                                <div className="relative flex flex-col justify-center items-center min-h-screen">
-                                    <div className="absolute top-44 h-20 text-3xl font-bold lg:text-5xl px-4 text-center mb-5">
-                                        {question.text}
-                                    </div>
-                                    <div className="flex flex-col items-center mt-20">
-                                        <div className="flex flex-row justify-center items-center gap-5 mb-5">
-                                            <Button value={1} />
-                                            <Button value={2} />
-                                            <Button value={3} />
-                                            <Button value={4} />
-                                            <Button value={5} />
+                        {question.id === questions.length - 1 ?
+                            (() => {
+                                onPhaseChange('results', answers)
+                            })()
+                            : (
+                                <>
+                                    <div class="py-3 sm:mx-auto">
+                                        <div class="bg-white min-w-1xl flex flex-col rounded-xl shadow-lg lg:w-8/12 m-auto">
+                                            <div class="px-5 py-5 h-24 lg:h-28">
+                                                <h2 class="text-gray-800 text-xl md:text-3xl font-semibold font-">{question.text}{console.log(answers)}</h2>
+                                            </div>
+                                            <div class="bg-gray-200 rounded-xl w-full flex flex-col items-center">
+                                                <div class="flex flex-col items-center py-6 space-y-3 min-w-full">
+                                                    <div class="flex flex-col items-center px-2 py-2">
+                                                        <div class="hidden text-lg text-gray-800 text-center mb-2 sm:mb-0 sm:flex-grow mr-5">Inaccurate</div>
+                                                        <div class="flex flex-row space-x-5 sm:space-x-4 mb-2 sm:mb-0 py-5">
+                                                            <Button value={1} />
+                                                            <Button value={2} />
+                                                            <Button value={3} />
+                                                            <Button value={4} />
+                                                            <Button value={5} />
+                                                        </div>
+                                                        <div class="flex w-full justify-between mt-2">
+                                                            <span class="text-lg text-gray-800">Inaccurate</span>
+                                                            <span class="text-lg text-gray-800">Accurate</span>
+                                                        </div>
+                                                        <div class="hidden text-lg text-gray-800 text-center sm:flex-grow ml-5">Accurate</div>
+                                                    </div>
+                                                </div>
+                                                <BackButton />
+                                            </div>
+                                            
                                         </div>
-                                        <div className="flex justify-between w-full md:max-w-md">
-                                            <span className="lg:text-2xl">Not accurate</span>
-                                            <span className="lg:text-2xl">Very accurate</span>
-                                        </div>
+                                        
                                     </div>
-                                    <BackButton />
-                                </div>
-                                
-                            </>
-
-
-
-
-
-                        )}
+                                </>
+                            )}
                     </div>
                 </div>
             </div>

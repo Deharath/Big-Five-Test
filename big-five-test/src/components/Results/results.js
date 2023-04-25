@@ -1,19 +1,9 @@
 import React from 'react';
-import MyBarChart from './BarChart.jsx';
+import MyBarChart from './BarChart.js';
+import { useState } from 'react';
 import styles from './results.css';
 
-
 export default function Results({ answers, questions, onPhaseChange }) {
-
-    const decodeResults = (encodedResults) => {
-        try {
-            return JSON.parse(atob(encodedResults));
-        } catch (err) {
-            console.error('Error decoding results:', err);
-            return answers;
-        }
-    };
-
 
     //Function that returns the labels for the chart based on the screen size
     const getLabels = () => {
@@ -36,7 +26,7 @@ export default function Results({ answers, questions, onPhaseChange }) {
         };
     }, []);
 
-    //Function that changes the pages of results to next or previous, there are six pages. 
+    //Function that changes the pages of results to next or previous
     const [page, setPage] = React.useState(0);
     const handlePageChange = (direction) => {
         if (direction === 'next') {
@@ -64,13 +54,12 @@ export default function Results({ answers, questions, onPhaseChange }) {
         return percentages;
     }
 
-
-    const encodedResults = (results) => {
-        return btoa(JSON.stringify(results));
-    }
-
-    function PageOne() {
-        const [copySuccess, setCopySuccess] = React.useState(false);
+    //Component rendering the code to save the results
+    function CodeComponent() {
+        const encodedResults = (results) => {
+            return btoa(JSON.stringify(results));
+        }
+        const [copySuccess, setCopySuccess] = useState(false);
         const handleCopyCode = async () => {
             try {
                 await navigator.clipboard.writeText(encodedResults(answers));
@@ -79,18 +68,24 @@ export default function Results({ answers, questions, onPhaseChange }) {
 
             }
         };
+
+        return (
+            <div className="flex flex-col text-xs justify-center">
+                <h3 className="font-semibold text-gray-800 mb-2">
+                    Save your results by copying this code:
+                </h3>
+                <p
+                    onClick={() => { handleCopyCode(); setTimeout(() => setCopySuccess(false), 2000) }}
+                    className="font-semibold text-gray-800 bg-gray-100 p-2 rounded cursor-pointer text-center">
+                    {copySuccess ? 'Copied!' : encodedResults(answers)}
+                </p>
+            </div>
+        )
+    }
+
+    function PageOne() {
         return (
             <>
-                <div className="flex flex-col text-xs justify-center">
-                    <h3 className="font-semibold text-gray-800 mb-2">
-                        Save your results by copying this code:
-                    </h3>
-                    <p
-                        onClick={() => { handleCopyCode(); setTimeout(() => setCopySuccess(false), 2000) }}
-                        className="font-semibold text-gray-800 bg-gray-100 ml-3 p-2 rounded cursor-pointer">
-                        {copySuccess ? 'Copied!' : encodedResults(answers)}
-                    </p>
-                </div>
                 <div className="flex flex-col items-center h-3/6 md:h-4/6 lg:h-5/6 w-full">
                     {(() => {
                         const percentages = calculatePercentages(answers, questions);
@@ -104,6 +99,7 @@ export default function Results({ answers, questions, onPhaseChange }) {
                         ];
                         return (
                             <>
+                                <CodeComponent />
                                 <MyBarChart data={data} labels={labels} />
                             </>
                         );
@@ -126,7 +122,7 @@ export default function Results({ answers, questions, onPhaseChange }) {
                 "Your openness score is high, which means you're intellectually curious, imaginative, and enjoy exploring new ideas and experiences. You appreciate art, beauty, and unconventional perspectives. This creativity and open-mindedness make you a valuable team member, as you're likely to come up with innovative solutions and embrace change with enthusiasm. Continue to nurture your curiosity and seek out opportunities for growth and learning.",
                 "You possess an exceptionally high level of openness, reflecting a strong passion for novelty, intellectual curiosity, and creativity. You're likely to thrive in environments that promote innovation and change, as you're always eager to explore new perspectives and challenge the status quo. Your imaginative and inventive nature makes you an asset in any team, as you bring fresh ideas and a willingness to push boundaries. Be sure to leverage your openness to foster a growth mindset and embrace lifelong learning."
             ],
-            percentageIndex: 0,
+            traitIndex: 4,
         },
         {
             name: "Conscientiousness",
@@ -137,7 +133,7 @@ export default function Results({ answers, questions, onPhaseChange }) {
                 "Your high conscientiousness score shows that you're organized, responsible, and goal-driven. You excel at planning and keeping track of deadlines, making you dependable and trustworthy. Just remember to embrace spontaneity from time to time and stay open to new experiences.",
                 "With an exceptionally high conscientiousness score, you exhibit remarkable self-discipline, organization, and goal-oriented behavior. Your dedication to order makes you a reliable individual. To keep your life dynamic, don't forget to seek balance by embracing change and exploring new opportunities."
             ],
-            percentageIndex: 1,
+            traitIndex: 2,
         },
         {
             name: "Extraversion",
@@ -148,7 +144,7 @@ export default function Results({ answers, questions, onPhaseChange }) {
                 "Your high extraversion score reflects your outgoing and energetic nature. You enjoy socializing, meeting new people, and engaging in group activities. While your extraverted qualities can be contagious, remember to respect the boundaries of others who may need more personal space.",
                 "With an exceptionally high extraversion score, you are a true social butterfly. Your enthusiasm and charisma make you the life of the party. As you thrive on social interaction, remember to also give yourself time for introspection and consider the preferences of those around you."
             ],
-            percentageIndex: 2,
+            traitIndex: 0,
         },
         {
             name: "Agreeableness",
@@ -159,24 +155,24 @@ export default function Results({ answers, questions, onPhaseChange }) {
                 "A high Agreeableness score demonstrates your strong empathetic abilities and genuine concern for others. You are skilled in maintaining harmony and often put others' needs before your own. It is crucial to ensure that your kindness does not lead to self-sacrifice or being taken advantage of.",
                 "With an exceptionally high Agreeableness score, your innate nurturing and selfless nature stands out. Your deep sense of compassion makes you a valuable friend and confidant. Remember to maintain healthy boundaries and practice self-care to avoid feeling overwhelmed or burnt out."
             ],
-            percentageIndex: 3,
+            traitIndex: 1,
         },
         {
             name: "Neuroticism",
             descriptions: [
-                "With a very low Neuroticism score, you possess exceptional emotional stability and are rarely disturbed by stress. Your calm and composed demeanor is an asset in high-pressure situations. Continue to nurture your mental well-being and resilience to maintain this balance.",
-                "Scoring below average in Neuroticism, you are generally even-tempered and can cope with stress effectively. While you may occasionally experience negative emotions, you tend to bounce back quickly. Further developing your stress management techniques can support your emotional health.",
-                "Your average Neuroticism score indicates that you experience a mix of emotional stability and instability. You may handle some stressors with ease, while others may pose challenges. Building a solid self-care routine and exploring stress reduction techniques can help improve emotional regulation.",
+                "With an exceptionally high Neuroticism score, you may often feel overwhelmed by stress and struggle with managing your emotions. Seeking professional support, such as therapy or counseling, can be beneficial in learning effective coping strategies and improving your emotional well-being.",
                 "A high Neuroticism score suggests that you may be more sensitive to stress and experience negative emotions more intensely. Developing coping strategies and engaging in activities that promote relaxation and well-being can help you achieve better emotional balance.",
-                "With an exceptionally high Neuroticism score, you may often feel overwhelmed by stress and struggle with managing your emotions. Seeking professional support, such as therapy or counseling, can be beneficial in learning effective coping strategies and improving your emotional well-being."
+                "Your average Neuroticism score indicates that you experience a mix of emotional stability and instability. You may handle some stressors with ease, while others may pose challenges. Building a solid self-care routine and exploring stress reduction techniques can help improve emotional regulation.",
+                "Scoring below average in Neuroticism, you are generally even-tempered and can cope with stress effectively. While you may occasionally experience negative emotions, you tend to bounce back quickly. Further developing your stress management techniques can support your emotional health.",
+                "With a very low Neuroticism score, you possess exceptional emotional stability and are rarely disturbed by stress. Your calm and composed demeanor is an asset in high-pressure situations. Continue to nurture your mental well-being and resilience to maintain this balance."
             ],
-            percentageIndex: 4,
+            traitIndex: 3,
         }
     ];
 
-    function TraitSection({ traitName, descriptions, percentageIndex }) {
+    function TraitSection({ traitName, descriptions, traitIndex }) {
         const percentages = calculatePercentages(answers, questions);
-        const traitScore = percentages[percentageIndex];
+        const traitScore = percentages[traitIndex];
 
         let descriptionIndex;
         if (traitScore >= 80) {
@@ -209,10 +205,15 @@ export default function Results({ answers, questions, onPhaseChange }) {
             <div className="p-5 rounded-xl h-screen w-11/12 lg:w-3/4 flex-1">
                 <div className=" flex flex-col shadow-lg w-full h-full justify-center">
                     <div className="px-12 py-5 bg-white rounded-t-xl">
-                        <h2 className="text-gray-800 text-3xl font-semibold justify-center flex">Your results: {console.log(calculatePercentages(answers, questions))}</h2>
+                        <h2 className="text-gray-800 text-3xl font-semibold justify-center flex">Your results:</h2>
                     </div>
-                    <div className="bg-gray-200 w-full flex flex-col h-4/6 text-black px-10 justify-evenly items-center">
-                        {page === 0 && <PageOne answers={answers} questions={questions} />}
+                    <div className="bg-gray-200 w-full flex flex-col h-4/6 text-black px-5 justify-around items-center">
+                        {page === 0 &&
+                            <>
+
+                                <PageOne answers={answers} questions={questions} />
+                            </>
+                        }
                         {traits.map((trait, index) => {
                             if (page === index + 1) {
                                 return (
@@ -220,8 +221,8 @@ export default function Results({ answers, questions, onPhaseChange }) {
                                         key={trait.name}
                                         traitName={trait.name}
                                         descriptions={trait.descriptions}
-                                        percentageIndex={trait.percentageIndex}
-                                        
+                                        traitIndex={trait.traitIndex}
+
                                     />
                                 );
                             }
@@ -234,7 +235,7 @@ export default function Results({ answers, questions, onPhaseChange }) {
                     </div>
                     <div className="bg-white rounded-b-xl">
                         <div className="flex items-center justify-center p-5 flex-col">
-                            <button onClick={() => onPhaseChange('questions')} className="text-gray-600 text-justify"> Take the test again</button>
+                            <button onClick={() => onPhaseChange('questionnaire')} className="text-gray-600 text-justify"> Take the test again</button>
                         </div>
                     </div>
                 </div>

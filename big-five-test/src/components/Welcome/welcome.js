@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-
+import { questions } from '../Questionaire/questionaire.js';
 
 export default function Welcome({ onPhaseChange }) {
   const [showInstructions, setShowInstructions] = useState(false);
-  const [code, setCode] = useState('');
+  const [code, setCode] = useState('WzExLDIxLDMwLDIxLDQ4XQ==');
   const [answers, setAnswers] = useState([]);
 
   const handleGetStarted = () => {
@@ -11,7 +11,7 @@ export default function Welcome({ onPhaseChange }) {
   };
 
   const handleBeginTest = () => {
-    onPhaseChange('questions');
+    onPhaseChange('questionnaire');
   };
 
   const handleCodeInputChange = (e) => {
@@ -19,13 +19,13 @@ export default function Welcome({ onPhaseChange }) {
   };
 
   const handleViewResults = () => {
-  const decodedResults = JSON.parse(atob(code));
-  setAnswers(decodedResults);
-  onPhaseChange('results', decodedResults);
-};
+    const decodedResults = JSON.parse(atob(code));
+    setAnswers(decodedResults);
+    onPhaseChange('results', decodedResults);
+  };
 
 
-  
+
 
   return (
     <section className="bg-gray-900 text-white h-full">
@@ -60,7 +60,7 @@ export default function Welcome({ onPhaseChange }) {
                     type="text"
                     value={code}
                     onChange={handleCodeInputChange}
-                    className="rounded-lg border-gray-300 shadow-sm w-1/2 px-3 py-2 text-lg text-black"
+                    className="rounded-lg border-gray-300 shadow-sm w-1/2 px-3 py-2 text-black"
                     placeholder="Enter your code"
                   />
                   <button

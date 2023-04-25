@@ -67,7 +67,10 @@ const MyBarChart = ({ data, labels }) => {
           },
           indexAxis: "y",
           layout: {
-            
+            padding: {
+              left: 0,
+              right: 25,
+            }
           },
           scales: {
             y: {
@@ -125,4 +128,4 @@ const MyBarChart = ({ data, labels }) => {
   return <canvas ref={chartRef}></canvas>;
 };
 
-export default React.memo(MyBarChart);
+export default MyBarChart;

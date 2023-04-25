@@ -1,64 +1,9 @@
 import React from 'react';
 import { useState } from 'react';
 import styles from './questionnaire.css';
-import MyBarChart from '../Results/BarChart.jsx';
 
-export const questions = [
-    { id: 1, text: "Am the life of the party.", aspect: 1, key: "+" },
-    { id: 2, text: "Feel little concern for others.", aspect: 2, key: "-" },
-    { id: 3, text: "Am always prepared.", aspect: 3, key: "+" },
-    { id: 4, text: "Get stressed out easily.", aspect: 4, key: "-" },
-    { id: 5, text: "Have a rich vocabulary.", aspect: 5, key: "+" },
-    { id: 6, text: "Don't talk a lot.", aspect: 1, key: "-" },
-    { id: 7, text: "Am interested in people.", aspect: 2, key: "+" },
-    { id: 8, text: "Leave my belongings around.", aspect: 3, key: "-" },
-    { id: 9, text: "Am relaxed most of the time.", aspect: 4, key: "+" },
-    { id: 10, text: "Have difficulty understanding abstract ideas.", aspect: 5, key: "-" },
-    { id: 11, text: "Feel comfortable around people.", aspect: 1, key: "+" },
-    { id: 12, text: "Insult people.", aspect: 2, key: "-" },
-    { id: 13, text: "Pay attention to details.", aspect: 3, key: "+" },
-    { id: 14, text: "Worry about things.", aspect: 4, key: "-" },
-    { id: 15, text: "Have a vivid imagination.", aspect: 5, key: "+" },
-    { id: 16, text: "Keep in the background.", aspect: 1, key: "-" },
-    { id: 17, text: "Sympathize with others' feelings.", aspect: 2, key: "+" },
-    { id: 18, text: "Make a mess of things.", aspect: 3, key: "-" },
-    { id: 19, text: "Seldom feel blue.", aspect: 4, key: "+" },
-    { id: 20, text: "Am not interested in abstract ideas.", aspect: 5, key: "-" },
-    { id: 21, text: "Start conversations.", aspect: 1, key: "+" },
-    { id: 22, text: "Am not interested in other people's problems.", aspect: 2, key: "-" },
-    { id: 23, text: "Get chores done right away.", aspect: 3, key: "+" },
-    { id: 24, text: "Am easily disturbed.", aspect: 4, key: "-" },
-    { id: 25, text: "Have excellent ideas.", aspect: 5, key: "+" },
-    { id: 26, text: "Have little to say.", aspect: 1, key: "-" },
-    { id: 27, text: "Have a soft heart.", aspect: 2, key: "+" },
-    { id: 28, text: "Often forget to put things back in their proper place.", aspect: 3, key: "-" },
-    { id: 29, text: "Get upset easily.", aspect: 4, key: "-" },
-    { id: 30, text: "Do not have a good imagination.", aspect: 5, key: "-" },
-    { id: 31, text: "Talk to a lot of different people at parties.", aspect: 1, key: "+" },
-    { id: 32, text: "Am not really interested in others.", aspect: 2, key: "-" },
-    { id: 33, text: "Like order.", aspect: 3, key: "+" },
-    { id: 34, text: "Change my mood a lot.", aspect: 4, key: "-" },
-    { id: 35, text: "Am quick to understand things.", aspect: 5, key: "+" },
-    { id: 36, text: "Don't like to draw attention to myself.", aspect: 1, key: "-" },
-    { id: 37, text: "Take time out for others.", aspect: 2, key: "+" },
-    { id: 38, text: "Shirk my duties.", aspect: 3, key: "-" },
-    { id: 39, text: "Have frequent mood swings.", aspect: 4, key: "-" },
-    { id: 40, text: "Use difficult words.", aspect: 5, key: "+" },
-    { id: 41, text: "Don't mind being the center of attention.", aspect: 1, key: "+" },
-    { id: 42, text: "Feel others' emotions.", aspect: 2, key: "+" },
-    { id: 43, text: "Follow a schedule.", aspect: 3, key: "+" },
-    { id: 44, text: "Get irritated easily.", aspect: 4, key: "-" },
-    { id: 45, text: "Spend time reflecting on things.", aspect: 5, key: "+" },
-    { id: 46, text: "Am quiet around strangers.", aspect: 1, key: "-" },
-    { id: 47, text: "Make people feel at ease.", aspect: 2, key: "+" },
-    { id: 48, text: "Am exacting in my work.", aspect: 3, key: "+" },
-    { id: 49, text: "Often feel blue.", aspect: 4, key: "-" },
-    { id: 50, text: "Am full of ideas.", aspect: 5, key: "+" }
-];
 
-export default function Questionnaire({ onPhaseChange }) {
-   
-    Questionnaire.questions = questions;
+export default function Questionnaire({ onPhaseChange, questions }) {
 
     //Aspect 1: Extraversion (E)
     //Aspect 2: Agreeableness (A)
@@ -85,12 +30,11 @@ export default function Questionnaire({ onPhaseChange }) {
     const [direction, setDirection] = useState('forward');
 
 
-    function Question({ question, questions }) {
-
+    function Question({questions }) {
+        
         function ProgressBar({ currentQuestion, totalQuestions, direction }) {
             const progressPercentage = (currentQuestion / totalQuestions) * 100;
             const previousPercentage = ((currentQuestion - (direction === 'forward' ? 1 : -1)) / totalQuestions) * 100;
-
 
             // Create a unique keyframes animation for each progress update
             const progressBarAnimation = `@keyframes progress-bar-animation-${currentQuestion} {
@@ -116,9 +60,11 @@ export default function Questionnaire({ onPhaseChange }) {
             );
         }
 
+        //Function that will render the buttons
+        function Buttons() {
+            const values = [1, 2, 3, 4, 5];
 
-        //Function that will increase or decrease the score of given aspect based on the key of the question and move to the next one
-        function Button({ value }) {
+            //Function that will handle the click on the buttons
             function onOptionSelect(value) {
                 const newAnswers = [...answers];
                 if (question.key === "+") {
@@ -130,12 +76,24 @@ export default function Questionnaire({ onPhaseChange }) {
                 setQuestion(questions[question.id]);
                 setClicked(value);
                 setDirection('forward');
+                if (question.id === questions.length) {
+                    onPhaseChange('results', newAnswers)
+                }
             }
+
             return (
-                <button
-                    onClick={() => onOptionSelect(value)}
-                    className={`${clicked === value && "button-animation"} text-white px-5 py-5 rounded-full justify-center h-1/5 bg-gray-700 border-2 border-gray-700 hover:bg-gray-600 hover:border-gray-600`}
-                ></button>
+                <>
+                    {values.map((value) => {
+                        return (
+                            <button
+                                key={value}
+                                onClick={() => onOptionSelect(value)}
+                                className={`${clicked === value && "button-animation"} text-white px-5 py-5 rounded-full justify-center h-1/5 bg-gray-700 border-2 border-gray-700 hover:bg-gray-600 hover:border-gray-600`}
+                            >
+                            </button>
+                        );
+                    })}
+                </>
             );
         }
 
@@ -146,7 +104,6 @@ export default function Questionnaire({ onPhaseChange }) {
                     setClicked(false);
                     const previousQuestion = questions[question.id - 2];
                     const prevAnswer = question.key === "+" ? answers[previousQuestion.aspect - 1] - 1 : answers[previousQuestion.aspect - 1] - (6 - 1);
-
                     const newAnswers = [...answers];
                     newAnswers[previousQuestion.aspect - 1] = prevAnswer;
                     setAnswers(newAnswers);
@@ -156,16 +113,16 @@ export default function Questionnaire({ onPhaseChange }) {
             }
 
             return (
-                <div class="w-3/4 flex flex-col">
-                    <button onClick={() => onBack()} class="py-3 my-8 text-lg bg-gradient-to-r from-purple-500 to-indigo-600 rounded-xl text-white">Back</button>
+                <div className="w-3/4 flex flex-col">
+                    <button onClick={() => onBack()} className="py-3 my-8 text-lg bg-gradient-to-r from-purple-500 to-indigo-600 rounded-xl text-white">Back</button>
                 </div>
             );
         }
 
-        //Skip button
+        //Function that allows the user to skip the test and go to the results, for testing purposes
         function SkipButton() {
             const handleSkip = () => {
-                const newAnswers = [11, 25, 33, 16, 44];
+                const newAnswers = [11, 21, 30, 21, 48];
                 setAnswers(newAnswers);
                 onPhaseChange('results', newAnswers);
             };
@@ -185,45 +142,32 @@ export default function Questionnaire({ onPhaseChange }) {
             <div className="bg-gray-900 text-white">
                 <div className="mx-auto max-w-screen-xl px-4 flex h-screen items-center">
                     <div className="mx-auto max-w-4xl text-center w-full px-4">
-                        {question.id === questions.length - 1 ?
-                            (() => {
-                                onPhaseChange('results', answers)
-                            })()
-                            : (
-                                <>
-                                    <div class="py-3 sm:mx-auto">
-                                        <div class="bg-white min-w-1xl flex flex-col rounded-xl shadow-lg lg:w-8/12 m-auto">
-                                            <div class="px-5 py-5 h-24 lg:h-28 question">
-                                                <h2 class="text-gray-800 text-xl md:text-3xl font-semibold font-">{question.text}</h2>
-                                            </div>
-                                            <ProgressBar currentQuestion={question.id - 1} totalQuestions={questions.length - 2} direction={direction} />
-                                            <div class="bg-gray-200 rounded-xl w-full flex flex-col items-center">
-                                                <div class="flex flex-col items-center p-6  space-y-3 min-w-full">
-                                                    <div class="flex flex-col items-center px-2 py-2 w-full">
-                                                        <div class="flex flex-col">
-                                                            <div className='flex flex-row space-x-5 sm:space-x-4 mb-2 sm:mb-0 py-5'>
-                                                            <Button value={1} />
-                                                            <Button value={2} />
-                                                            <Button value={3} />
-                                                            <Button value={4} />
-                                                            <Button value={5} />
-                                                            </div>
-                                                            <div class="flex w-full justify-between mt-2">
-                                                                <span class="text-lg text-gray-800">Inaccurate</span>
-                                                                <span class="text-lg text-gray-800">Accurate</span>
-                                                            </div>
-                                                        </div>
-
-
-                                                    </div>
+                        <div className="py-3 sm:mx-auto">
+                            <div className="bg-white min-w-1xl flex flex-col rounded-xl shadow-lg lg:w-8/12 m-auto">
+                                <div className="px-5 py-5 h-24 lg:h-28 question">
+                                    <h2 className="text-gray-800 text-xl md:text-3xl font-semibold font-">{question.text}</h2>
+                                </div>
+                                <ProgressBar currentQuestion={question.id} totalQuestions={questions.length + 1} direction={direction} />
+                                <div className="bg-gray-200 rounded-xl w-full flex flex-col items-center">
+                                    <div className="flex flex-col items-center p-6  space-y-3 min-w-full">
+                                        <div className="flex flex-col items-center px-2 py-2 w-full">
+                                            <div className="flex flex-col">
+                                                <div className='flex flex-row space-x-5 sm:space-x-4 mb-2 sm:mb-0 py-5'>
+                                                    <Buttons />
                                                 </div>
-                                                <BackButton />
+                                                <div className="flex w-full justify-between mt-2">
+                                                    <span className="text-lg text-gray-800">Inaccurate</span>
+                                                    <span className="text-lg text-gray-800">Accurate</span>
+                                                </div>
                                             </div>
-                                        </div>
 
+
+                                        </div>
                                     </div>
-                                </>
-                            )}
+                                    <BackButton />
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

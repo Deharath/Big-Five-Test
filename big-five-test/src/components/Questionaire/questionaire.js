@@ -30,8 +30,8 @@ export default function Questionnaire({ onPhaseChange, questions }) {
     const [direction, setDirection] = useState('forward');
 
 
-    function Question({questions }) {
-        
+    function Question({ questions }) {
+
         function ProgressBar({ currentQuestion, totalQuestions, direction }) {
             const progressPercentage = (currentQuestion / totalQuestions) * 100;
             const previousPercentage = ((currentQuestion - (direction === 'forward' ? 1 : -1)) / totalQuestions) * 100;
@@ -144,8 +144,9 @@ export default function Questionnaire({ onPhaseChange, questions }) {
                     <div className="mx-auto max-w-4xl text-center w-full px-4">
                         <div className="py-3 sm:mx-auto">
                             <div className="bg-white min-w-1xl flex flex-col rounded-xl shadow-lg lg:w-8/12 m-auto">
-                                <div className="px-5 py-5 h-24 lg:h-28 question">
-                                    <h2 className="text-gray-800 text-xl md:text-3xl font-semibold font-">{question.text}</h2>
+                                <div className="px-5 py-2 h-24 lg:h-28">
+                                    <span className='text-black'>{`${question.id} / ${questions.length}`}</span>
+                                    <h2 className="text-gray-800 text-xl md:text-3xl font-semibold question">{question.text}</h2>
                                 </div>
                                 <ProgressBar currentQuestion={question.id} totalQuestions={questions.length + 1} direction={direction} />
                                 <div className="bg-gray-200 rounded-xl w-full flex flex-col items-center">

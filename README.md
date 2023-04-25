@@ -17,11 +17,11 @@ This project is a basic personality quiz app that allows users to answer a serie
 
 ## Demo
 
-# 1. Landing Page
+### 1. Landing Page
 ![Screenshot of landing page](https://user-images.githubusercontent.com/25016899/234275404-9e20436d-7a30-4249-ac78-137a381e5c3d.png)
-# 2. Example Question
+### 2. Example Question
 ![Screenshot of example question](https://user-images.githubusercontent.com/25016899/234276401-0011b586-a4b4-4e5d-859f-36423e6abcd9.png)
-# 3. Example Results
+### 3. Example Results
 ![Screenshot of example results](https://user-images.githubusercontent.com/25016899/234275944-c9a01c6f-06a0-4396-9f1b-79c47f59c5f6.png)
 
 

@@ -38,6 +38,7 @@ const MyBarChart = ({ data, labels }) => {
     if (chartRef && chartRef.current) {
       if (chartInstance.current) {
         chartInstance.current.destroy();
+        chartInstance.current = null;
       }
 
       chartInstance.current = new Chart(chartRef.current, {
@@ -58,6 +59,7 @@ const MyBarChart = ({ data, labels }) => {
         },
         options: {
           responsive: true,
+          maintainAspectRatio: false,
           plugins: {
             tooltip: {
               enabled: false,
@@ -65,12 +67,7 @@ const MyBarChart = ({ data, labels }) => {
           },
           indexAxis: "y",
           layout: {
-            padding: {
-              left: 40,
-              right: 60,
-              top: 20,
-              bottom: 20,
-            },
+            
           },
           scales: {
             y: {
@@ -100,6 +97,7 @@ const MyBarChart = ({ data, labels }) => {
           },
           animation: {
             onComplete: () => {
+              if (!chartInstance.current || !chartRef.current) return;
               const ctx = chartRef.current.getContext("2d");
               ctx.font = "14px Segoe UI";
               ctx.fillStyle = "#333";
@@ -119,6 +117,7 @@ const MyBarChart = ({ data, labels }) => {
     return () => {
       if (chartInstance.current) {
         chartInstance.current.destroy();
+        chartInstance.current = null;
       }
     };
   }, [data, labels]);
@@ -126,4 +125,4 @@ const MyBarChart = ({ data, labels }) => {
   return <canvas ref={chartRef}></canvas>;
 };
 
-export default MyBarChart;
+export default React.memo(MyBarChart);

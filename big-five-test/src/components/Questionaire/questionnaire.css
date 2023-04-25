@@ -10,3 +10,20 @@
 .question {
   animation: fadeIn 0.3s ease-in-out;
 }
+
+@keyframes revertColor {
+  0% {
+    background-color: #fff; /* Green color when the button is clicked */
+  }
+  100% {
+    background-color: #374151; /* Default button color */
+  }
+}
+
+.button-animation {
+  animation: revertColor 0.3s ease-in-out forwards;
+}
+
+.progress-bar {
+  animation: progress-bar-animation 1s ease-in-out forwards;
+}

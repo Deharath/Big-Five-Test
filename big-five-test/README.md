@@ -1,70 +1,37 @@
-# Getting Started with Create React App
+# Personality Quiz App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A beginner-friendly React-based web application for taking a personality quiz and displaying the results.
+It's avaiable under this link: https://deharath.github.io/big-five-test/
 
-## Available Scripts
+## Introduction
 
-In the project directory, you can run:
+This project is a basic personality quiz app that allows users to answer a series of questions and receive an analysis of their personality traits based on their responses. The app features a simple interface, easy navigation between questions, and straightforward results sections.
 
-### `npm start`
+## Features
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- User-friendly questionnaire interface
+- Easy navigation between questions and results sections
+- Basic personality trait analysis based on user responses
+- Responsive design that works on various screen sizes and devices
+- Option to retake the quiz
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Demo
 
-### `npm test`
+# 1. Landing Page
+![Screenshot of landing page](https://user-images.githubusercontent.com/25016899/234275404-9e20436d-7a30-4249-ac78-137a381e5c3d.png)
+# 2. Example Question
+![Screenshot of example question](https://user-images.githubusercontent.com/25016899/234276401-0011b586-a4b4-4e5d-859f-36423e6abcd9.png)
+# 3. Example Results
+![Screenshot of example results](https://user-images.githubusercontent.com/25016899/234275944-c9a01c6f-06a0-4396-9f1b-79c47f59c5f6.png)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run build`
+## Technologies Used
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- React
+- JavaScript
+- CSS
+- Tailwind CSS
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Usage
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Simply access the app at `https://deharath.github.io/big-five-test/` and follow the on-screen instructions to complete the personality quiz. After submitting your answers, the app will display an analysis of your personality traits based on your responses. You can navigate between different sections of the results or retake the quiz as desired.

@@ -31,6 +31,7 @@ This project is a basic personality quiz app that allows users to answer a serie
 - JavaScript
 - CSS
 - Tailwind CSS
+- Chart.js
 
 ## Usage
 

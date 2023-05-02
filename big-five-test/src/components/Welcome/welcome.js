@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { questions } from '../Questionaire/questionaire.js';
+import { Buffer } from 'buffer';
 
 export default function Welcome({ onPhaseChange }) {
   const [showInstructions, setShowInstructions] = useState(false);
@@ -19,7 +20,7 @@ export default function Welcome({ onPhaseChange }) {
   };
 
   const handleViewResults = () => {
-    const decodedResults = JSON.parse(atob(code));
+    const decodedResults = JSON.parse(Buffer.from(code, 'base64').toString('utf8'));
     setAnswers(decodedResults);
     onPhaseChange('results', decodedResults);
   };

@@ -22,7 +22,9 @@ This project is a basic personality quiz app that allows users to answer a serie
 ### 2. Example Question
 ![Screenshot of example question](https://user-images.githubusercontent.com/25016899/234276401-0011b586-a4b4-4e5d-859f-36423e6abcd9.png)
 ### 3. Example Results
-![Screenshot of example results](https://user-images.githubusercontent.com/25016899/234275944-c9a01c6f-06a0-4396-9f1b-79c47f59c5f6.png)
+![Screenshot of example results](https://user-images.githubusercontent.com/25016899/236040343-09cb4dca-0b31-454b-b130-0bd2c6cac7c6.png)
+
+
 
 
 ## Technologies Used

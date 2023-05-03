@@ -46,11 +46,12 @@
     {
         "name": "Neuroticism",
         "descriptions": [
-            "With an exceptionally high Neuroticism score, you may often feel overwhelmed by stress and struggle with managing your emotions. Seeking professional support, such as therapy or counseling, can be beneficial in learning effective coping strategies and improving your emotional well-being.",
-            "A high Neuroticism score suggests that you may be more sensitive to stress and experience negative emotions more intensely. Developing coping strategies and engaging in activities that promote relaxation and well-being can help you achieve better emotional balance.",
-            "Your average Neuroticism score indicates that you experience a mix of emotional stability and instability. You may handle some stressors with ease, while others may pose challenges. Building a solid self-care routine and exploring stress reduction techniques can help improve emotional regulation.",
+            
+            "With a very low Neuroticism score, you possess exceptional emotional stability and are rarely disturbed by stress. Your calm and composed demeanor is an asset in high-pressure situations. Continue to nurture your mental well-being and resilience to maintain this balance.",
             "Scoring below average in Neuroticism, you are generally even-tempered and can cope with stress effectively. While you may occasionally experience negative emotions, you tend to bounce back quickly. Further developing your stress management techniques can support your emotional health.",
-            "With a very low Neuroticism score, you possess exceptional emotional stability and are rarely disturbed by stress. Your calm and composed demeanor is an asset in high-pressure situations. Continue to nurture your mental well-being and resilience to maintain this balance."
+            "Your average Neuroticism score indicates that you experience a mix of emotional stability and instability. You may handle some stressors with ease, while others may pose challenges. Building a solid self-care routine and exploring stress reduction techniques can help improve emotional regulation.",
+            "A high Neuroticism score suggests that you may be more sensitive to stress and experience negative emotions more intensely. Developing coping strategies and engaging in activities that promote relaxation and well-being can help you achieve better emotional balance.",
+            "With an exceptionally high Neuroticism score, you may often feel overwhelmed by stress and struggle with managing your emotions. Seeking professional support, such as therapy or counseling, can be beneficial in learning effective coping strategies and improving your emotional well-being."
         ],
         "traitIndex": 3
     }

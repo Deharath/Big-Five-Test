@@ -1,6 +1,6 @@
 import './App.css';
 import Welcome from './components/Welcome/welcome.js';
-import Questionnaire from './components/Questionaire/questionaire.js';
+import Questionnaire from './components/Questionnaire/questionnaire.js';
 import Results from './components/Results/results.js';
 import { useState } from 'react';
 import questions from './data/questions.json'

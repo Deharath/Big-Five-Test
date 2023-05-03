@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
-import { questions } from '../Questionaire/questionaire.js';
 import { Buffer } from 'buffer';
 
-export default function Welcome({ onPhaseChange }) {
+
+const Welcome = ({ onPhaseChange }) => {
   const [showInstructions, setShowInstructions] = useState(false);
-  const [code, setCode] = useState('WzExLDIxLDMwLDIxLDQ4XQ==');
-  const [answers, setAnswers] = useState([]);
+  const [code, setCode] = useState('WzE1LCAyMiwgMzIsIDE5LCA0OV0=');
 
   const handleGetStarted = () => {
     setShowInstructions(true);
@@ -21,12 +20,8 @@ export default function Welcome({ onPhaseChange }) {
 
   const handleViewResults = () => {
     const decodedResults = JSON.parse(Buffer.from(code, 'base64').toString('utf8'));
-    setAnswers(decodedResults);
     onPhaseChange('results', decodedResults);
   };
-
-
-
 
   return (
     <section className="bg-gray-900 text-white h-full">
@@ -36,12 +31,9 @@ export default function Welcome({ onPhaseChange }) {
         <div className="mx-auto max-w-screen-xl text-center h-full flex flex-col flex-shrink justify-evenly items-center">
           {!showInstructions ? (
             <>
-              <h1
-                className="bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 bg-clip-text text-3xl font-extrabold text-transparent sm:text-5xl p-5"
-              >
+              <h1 className="bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 bg-clip-text text-3xl font-extrabold text-transparent sm:text-5xl p-5">
                 Welcome to the Big Five Personality Test
               </h1>
-
               <div className="flex flex-wrap justify-center gap-10 flex-col items-center w-9/12 lg:w-8/12">
                 <p className="mt-4  sm:text-xl/relaxed">
                   Discover your personality traits by answering a series of questions
@@ -80,7 +72,6 @@ export default function Welcome({ onPhaseChange }) {
               >
                 Instructions
               </h1>
-
               <div className="flex flex-wrap justify-center gap-10 flex-col items-center w-9/12 lg:w-8/12">
                 <ul className=' flex flex-col space-y-5 items-center md:text-2xl'>
                   <li>There are 50 questions in this test.</li>
@@ -102,3 +93,5 @@ export default function Welcome({ onPhaseChange }) {
     </section>
   );
 }
+
+export default Welcome;

@@ -1,9 +1,8 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import styles from './questionnaire.css';
 
 
-export default function Questionnaire({ onPhaseChange, questions }) {
+const Questionnaire = ({ onPhaseChange, questions }) => {
 
     //Aspect 1: Extraversion (E)
     //Aspect 2: Agreeableness (A)
@@ -28,6 +27,10 @@ export default function Questionnaire({ onPhaseChange, questions }) {
 
     //State that will hold the direction of the animation
     const [direction, setDirection] = useState('forward');
+
+    // State that will hold the clicked values for each question
+    const [clickedValues, setClickedValues] = useState(Array(questions.length).fill(null));
+
 
 
     function Question({ questions }) {
@@ -67,32 +70,33 @@ export default function Questionnaire({ onPhaseChange, questions }) {
             //Function that will handle the click on the buttons
             function onOptionSelect(value) {
                 const newAnswers = [...answers];
-                if (question.key === "+") {
-                    newAnswers[question.aspect - 1] += value;
-                } else {
-                    newAnswers[question.aspect - 1] += (6 - value);
-                }
+                newAnswers[question.aspect - 1] += question.key === "+" ? value : (6 - value);
                 setAnswers(newAnswers);
                 setQuestion(questions[question.id]);
                 setClicked(value);
+            
+                const newClickedValues = [...clickedValues];
+                newClickedValues[question.id - 1] = value;
+                setClickedValues(newClickedValues);
+            
                 setDirection('forward');
                 if (question.id === questions.length) {
                     onPhaseChange('results', newAnswers)
                 }
             }
+            
 
             return (
                 <>
-                    {values.map((value) => {
-                        return (
-                            <button
-                                key={value}
-                                onClick={() => onOptionSelect(value)}
-                                className={`${clicked === value && "button-animation"} text-white px-5 py-5 rounded-full justify-center h-1/5 bg-gray-700 border-2 border-gray-700 hover:bg-gray-600 hover:border-gray-600`}
-                            >
-                            </button>
-                        );
-                    })}
+                    {values.map(value => (
+                        <button
+                            key={value}
+                            onClick={() => onOptionSelect(value)}
+                            className={`${clicked === value && "button-animation"} text-white p-5 rounded-full justify-center h-1/5 bg-gray-700 border-2 border-gray-700 hover:bg-gray-600 hover:border-gray-600`}
+                        >
+                        </button>
+                    ))}
+
                 </>
             );
         }
@@ -101,22 +105,26 @@ export default function Questionnaire({ onPhaseChange, questions }) {
         function BackButton() {
             function onBack() {
                 if (question.id > 1) {
-                    setClicked(false);
                     const previousQuestion = questions[question.id - 2];
-                    const prevAnswer = question.key === "+" ? answers[previousQuestion.aspect - 1] - 1 : answers[previousQuestion.aspect - 1] - (6 - 1);
+                    const prevValue = clickedValues[previousQuestion.id - 1];
+                    const prevAnswer = previousQuestion.key === "+" ? answers[previousQuestion.aspect - 1] - prevValue : answers[previousQuestion.aspect - 1] - (6 - prevValue);
                     const newAnswers = [...answers];
                     newAnswers[previousQuestion.aspect - 1] = prevAnswer;
                     setAnswers(newAnswers);
+            
+                    const newClickedValues = [...clickedValues];
+                    newClickedValues[previousQuestion.id - 1] = null;
+                    setClickedValues(newClickedValues);
+            
+                    setClicked(newClickedValues[previousQuestion.id - 2]);
                     setDirection('backward');
                     setQuestion(previousQuestion);
-                    if (question.id === questions.length) {
-                    onPhaseChange('results', newAnswers)
-                }
-                }
-                else {
+                } else {
                     onPhaseChange('welcome');
                 }
             }
+            
+
 
             return (
                 <div className="w-3/4 flex flex-col">
@@ -128,7 +136,7 @@ export default function Questionnaire({ onPhaseChange, questions }) {
         //Function that allows the user to skip the test and go to the results, for testing purposes
         function SkipButton() {
             const handleSkip = () => {
-                const newAnswers = [11, 21, 30, 21, 48];
+                const newAnswers = [50, 50, 50, 50, 50];
                 setAnswers(newAnswers);
                 onPhaseChange('results', newAnswers);
             };
@@ -159,7 +167,7 @@ export default function Questionnaire({ onPhaseChange, questions }) {
                                     <div className="flex flex-col items-center p-6  space-y-3 min-w-full">
                                         <div className="flex flex-col items-center px-2 py-2 w-full">
                                             <div className="flex flex-col">
-                                                <div className='flex flex-row space-x-5 sm:space-x-4 mb-2 sm:mb-0 py-5'>
+                                                <div className='flex flex-row space-x-3 sm:space-x-2 mb-2 sm:mb-0 py-5'>
                                                     <Buttons />
                                                 </div>
                                                 <div className="flex w-full justify-between mt-2">
@@ -167,8 +175,6 @@ export default function Questionnaire({ onPhaseChange, questions }) {
                                                     <span className="text-lg text-gray-800">Accurate</span>
                                                 </div>
                                             </div>
-
-
                                         </div>
                                     </div>
                                     <BackButton />
@@ -186,3 +192,4 @@ export default function Questionnaire({ onPhaseChange, questions }) {
     );
 
 };
+export default Questionnaire;

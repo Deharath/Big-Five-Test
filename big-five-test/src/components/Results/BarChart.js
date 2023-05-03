@@ -18,7 +18,7 @@ Chart.register(
   Tooltip
 );
 
-const MyBarChart = ({ data, labels, onBarClick }) => {
+const MyBarChart = ({ data, labels, onBarClickChangePage }) => {
   const chartRef = useRef(null);
   const chartInstance = useRef(null);
 
@@ -62,10 +62,13 @@ const MyBarChart = ({ data, labels, onBarClick }) => {
             const activePoints = chartInstance.current.getElementsAtEventForMode(event, 'nearest', { intersect: true }, true);
             if (activePoints.length) {
               const selectedIndex = activePoints[0].index;
-              onBarClick(selectedIndex + 1);
+              onBarClickChangePage(selectedIndex + 1);
             }
           },
           responsive: true,
+          hover: {
+            mode: null,
+          },
           maintainAspectRatio: false,
           plugins: {
             tooltip: {
@@ -76,7 +79,7 @@ const MyBarChart = ({ data, labels, onBarClick }) => {
           layout: {
             padding: {
               left: 0,
-              right: 25,
+              right: 45,
             }
           },
           scales: {
@@ -123,7 +126,7 @@ const MyBarChart = ({ data, labels, onBarClick }) => {
         },
       });
     }
-  }, [data, labels]);
+  }, []);
 
   return <canvas ref={chartRef}></canvas>;
 };

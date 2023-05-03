@@ -1,33 +1,45 @@
+// External dependencies
 import React from 'react';
-import MyBarChart from './BarChart.js';
-import { useState, useEffect, useContext, createContext, useRef} from 'react';
-import styles from './results.css';
+import { useState, useEffect, useContext, createContext } from 'react';
 import { Buffer } from 'buffer';
+
+// Internal dependencies
+import MyBarChart from './BarChart.js';
+import styles from './results.css';
 import TraitDescriptions from '../../data/TraitDescriptions.json';
 
-export default function Results({ answers, questions, onPhaseChange }) {
+const Results = ({ answers, questions, onPhaseChange }) => {
     const PageContext = createContext();
 
-    //Function that returns the labels for the chart based on the screen size
-    const getLabels = () => {
-        const isSmallScreen = window.innerWidth < 700;
+    const PageProvider = ({ children }) => {
+        const [page, setPage] = useState(0);
+
+        return (
+            <PageContext.Provider value={{ page, setPage }}>
+                {children}
+            </PageContext.Provider>
+        );
+    };
+
+    const useLabels = () => {
+        const [windowSize, setWindowSize] = useState(window.innerWidth);
+
+        useEffect(() => {
+            const handleResize = () => {
+                setWindowSize(window.innerWidth);
+            };
+
+            window.addEventListener("resize", handleResize);
+            return () => {
+                window.removeEventListener("resize", handleResize);
+            };
+        }, []);
+
+        const isSmallScreen = windowSize < 700;
         return isSmallScreen
             ? ["O", "C", "E", "A", "N"]
             : ["Openness", "Conscientiousness", "Extraversion", "Agreeableness", "Neuroticism"];
     };
-
-    //Function that updates the labels when the screen size changes
-    const [windowSize, setWindowSize] = useState(window.innerWidth);
-    useEffect(() => {
-        const handleResize = () => {
-            setWindowSize(window.innerWidth);
-        };
-
-        window.addEventListener("resize", handleResize);
-        return () => {
-            window.removeEventListener("resize", handleResize);
-        };
-    }, []);
 
 
     //Function that calculates the percentages of each aspect
@@ -57,7 +69,7 @@ export default function Results({ answers, questions, onPhaseChange }) {
                 await navigator.clipboard.writeText(encodedResults(answers));
                 setCopySuccess(true);
             } catch (err) {
-
+                console.error('Failed to copy the code: ', err);
             }
         };
 
@@ -75,10 +87,9 @@ export default function Results({ answers, questions, onPhaseChange }) {
         )
     }
 
-
-
     function PageOne() {
-        const labels = getLabels();
+        const { setPage } = useContext(PageContext);
+        const labels = useLabels();
         const data = [
             percentages[4].toFixed(0),
             percentages[2].toFixed(0),
@@ -89,51 +100,38 @@ export default function Results({ answers, questions, onPhaseChange }) {
         return (
             <>
                 <div className="flex flex-col items-center h-full w-full">
-                    <MyBarChart data={data} labels={labels} onBarClick={setPage}/>
+                    <MyBarChart data={data} labels={labels} onBarClickChangePage={setPage} />
                 </div>
             </>
         );
     }
 
-    
     function TraitDescriptionList() {
-        const [page, setPage] = useState(1);
+        const { page } = useContext(PageContext);
+
+        if (page === 0) {
+            return (
+                <h2 className="font-bold lg:mb-5 text-2xl lg:text-4xl text-center">
+                    Click on the bars for more info!
+                </h2>
+            );
+        }
+
+        const trait = TraitDescriptions[page - 1];
+        const traitScore = percentages[trait.traitIndex];
+        const descriptionIndex = Math.floor(traitScore / 20);
+
         return (
             <>
-                {TraitDescriptions.map((trait, index) => {
-                    if (page === index + 1) {
-                        const traitScore = percentages[trait.traitIndex];
-                        let descriptionIndex;
-
-                        if (traitScore >= 80) {
-                            descriptionIndex = 4;
-                        } else if (traitScore >= 60) {
-                            descriptionIndex = 3;
-                        } else if (traitScore >= 40) {
-                            descriptionIndex = 2;
-                        } else if (traitScore >= 20) {
-                            descriptionIndex = 1;
-                        } else {
-                            descriptionIndex = 0;
-                        }
-
-                        return (
-                            <div
-                                className="flex flex-col py-2 md:py-4 lg:py-6 px-6 space-y-3 w-full h-1/2 items-center description"
-                            >
-                                <h2 className="font-bold lg:mb-5 text-center">{trait.name}</h2>
-                                <p className="text-sm text-justify">
-                                    {trait.descriptions[descriptionIndex]}
-                                </p>
-                            </div>
-                        );
-                    }
-                    return null;
-                })}
+                <h2 className="font-bold lg:mb-5 text-center md:text-lg lg:text-3xl">
+                    {trait.name}
+                </h2>
+                <p className="text-sm md:text-lg lg:text-xl text-justify">
+                    {trait.descriptions[descriptionIndex]}
+                </p>
             </>
         );
     }
-
 
     return (
         <div className="bg-gray-900 text-white h-screen w-full flex justify-center items-center flex-col">
@@ -143,10 +141,14 @@ export default function Results({ answers, questions, onPhaseChange }) {
                         <h2 className="text-gray-800 text-3xl font-semibold justify-center flex"><ResultsCode /></h2>
                     </div>
                     <div className="bg-gray-200 w-full flex flex-col items-center h-4/6 text-black px-5 justify-around">
-                        <div className="h-1/2 w-full items-center">
-                            <PageOne />
-                        </div>
-                        <TraitDescriptionList />
+                        <PageProvider>
+                            <div className="h-1/2 w-full items-center">
+                                <PageOne />
+                            </div>
+                            <div className="flex flex-col py-2 md:py-4 lg:py-6 px-6 space-y-3 w-full h-1/2 items-center justify-center description">
+                                <TraitDescriptionList />
+                            </div>
+                        </PageProvider>
                     </div>
                     <div className="bg-white rounded-b-xl">
                         <div className="flex items-center justify-center p-5 flex-col">
@@ -155,7 +157,8 @@ export default function Results({ answers, questions, onPhaseChange }) {
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
     );
-
 }
+
+export default Results;

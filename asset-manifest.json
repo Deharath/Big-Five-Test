@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/big-five-test/static/css/main.94c77474.css",
+    "main.css": "/big-five-test/static/css/main.49072020.css",
     "main.js": "/big-five-test/static/js/main.8ce2142d.js",
     "index.html": "/big-five-test/index.html",
-    "main.94c77474.css.map": "/big-five-test/static/css/main.94c77474.css.map",
+    "main.49072020.css.map": "/big-five-test/static/css/main.49072020.css.map",
     "main.8ce2142d.js.map": "/big-five-test/static/js/main.8ce2142d.js.map"
   },
   "entrypoints": [
-    "static/css/main.94c77474.css",
+    "static/css/main.49072020.css",
     "static/js/main.8ce2142d.js"
   ]
 }
